@@ -1,0 +1,6 @@
+export const ADD_WORDS = 'ADD_WORDS'
+export const DELETE_WORDS = 'DELETE_WORDS'
+export const SAVETEXT = 'SAVETEXT'
+export const TOGGLEVISIBLE = 'TOGGLEVISIBLE'
+export const ALL_WORDS = 'ALL_WORDS'
+export const LOGIN = 'LOGIN'
