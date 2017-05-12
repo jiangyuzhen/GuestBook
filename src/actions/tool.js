@@ -1,6 +1,5 @@
 import md5 from 'md5'
 import PouchDB from 'pouchdb'
-import { message } from 'antd'
 
 const db =  new PouchDB('guestBooks');
 // db.destroy().then(function (response) {
@@ -13,19 +12,15 @@ export const getGravatar = (email) => {
     return md5( email.trim().toLowerCase() )
 }
 
-export const getAllBook = (action) => {
-    db.allDocs({
+export const getAllBook = () => {
+   return db.allDocs({
       include_docs: true,
       attachments: true
-    }).then(function (result) {
-      // handle result
-      action(result) 
-    }).catch(function (err) {
-       message.error(err);
-    });
+    })
 }
 
-export const addBook = (email, text, action) => {
+export const addBook = ( email, text ) => {
+  
     let word = {
         _id: new Date().getTime().toString(),
         text: text,
@@ -34,15 +29,11 @@ export const addBook = (email, text, action) => {
         gravatar: getGravatar(email),
         replyList: []
     }
-    db.put(word).then(function (response) {
-      // handle response
-      getAllBook(action)
-    }).catch(function (err) {
-      message.error(err);
-    });
+    
+    return db.put(word);
 }
 
-export const addReply = (doc, email, text, action) => {
+export const addReply = ( doc, email, text ) => {
   let reply = {
         _id: new Date().getTime().toString(),
         text: text,
@@ -51,7 +42,7 @@ export const addReply = (doc, email, text, action) => {
         gravatar: getGravatar(email)
   }
 
-  db.get(doc._id).then(function(doc) {
+  return db.get(doc._id).then(function(doc) {
     return db.put({
       _id: doc._id,
       _rev: doc._rev,
@@ -64,10 +55,5 @@ export const addReply = (doc, email, text, action) => {
         ...doc.replyList
       ]
     });
-  }).then(function(response) {
-    // handle response
-    getAllBook(action)
-  }).catch(function (err) {
-    message.error(err);
-  });
+  })
 }

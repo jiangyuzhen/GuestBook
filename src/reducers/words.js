@@ -1,4 +1,4 @@
-import {  DELETE_WORDS, SAVETEXT, TOGGLEVISIBLE, ALL_WORDS, LOGIN } from '../constants/ActionTypes'
+import {  SAVETEXT, TOGGLEVISIBLE, ALL_WORDS, LOGIN } from '../constants/ActionTypes'
 
 const initialState = {
   visibleModel: false,
@@ -11,31 +11,23 @@ const initialState = {
 
 export default function words(state = initialState, action) {
   switch (action.type) {
-    case DELETE_WORDS:
-      return state
 
     case SAVETEXT:
-      return Object.assign({}, state, {
-        text: action.text
-      })
+      return {...state, text: action.text}
 
     case TOGGLEVISIBLE:
-       return Object.assign({}, state, {
+       return {
+          ...state,
           visibleModel: action.visible,
           editStuts: action.editStuts,
-          currentWord: action.word ? action.word : {}
-        })
+           currentWord: action.word ? action.word : {}
+        } 
 
     case ALL_WORDS:
-      return Object.assign({}, state, {
-        list: action.list.rows
-      })
+      return {...state, list: action.list.rows}
 
     case LOGIN:
-      return Object.assign({}, state, {
-        email: action.email,
-        visibleModel: false
-      })
+      return {...state, email: action.email, visibleModel: false}
 
     default:
       return state
